@@ -8,7 +8,7 @@ import os.path
 serverName = 'localhost'
 serverPort = 12000
 serverSocket = 0
-
+game_state = 'game_state.txt'
 def main():
     client_server_select = raw_input('Type client or server: ')
 
@@ -20,7 +20,7 @@ def main():
         print 'Invalid option. Closing.'
 
 def client():
-    path = "./store/'game_state.txt'"
+    path = "./store_client/game_state.txt"
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
     print 'Client started.\nValid commands are recieve and send\nEnter \'q\' to quit.'
@@ -57,7 +57,7 @@ def server():
     serverSocket.bind(('',serverPort))
     serverSocket.listen(1)
     print "The server has started.\nUse ctrl-c to quit."
-    path = "./store/'game_state.txt'"
+    path = "./store_server/game_state.txt"
     while 1:
         connectionSocket, addr = serverSocket.accept()
         clientInput = connectionSocket.recv(1024)
@@ -85,7 +85,8 @@ def server():
         connectionSocket.close()
 
 def sendFile(sock, fileName):
-    path = './store/' + fileName
+    # path = './store/' + fileName
+    path = fileName
     if not os.path.isfile(path):
         message = 'Failure: no file'
         sock.send(message)
