@@ -12,15 +12,15 @@ serverSocket = 0
 def main():
     client_server_select = raw_input('Type client or server: ')
 
-    if client_server_select = 'client':
+    if client_server_select == 'client':
         client()
-    elif client_server_select = 'server':
+    elif client_server_select == 'server':
         server()
     else:
         print 'Invalid option. Closing.'
 
 def client():
-    path = './store/game_state'
+    path = "./store/'game_state.txt'"
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
     print 'Client started.\nValid commands are recieve and send\nEnter \'q\' to quit.'
@@ -43,7 +43,7 @@ def client():
                 f.close()
             break
         elif message == 'send':
-            sendFile(clientSocket, game_state)
+            sendFile(clientSocket, path)
             clientSocket.shutdown(SHUT_WR)
             print 'Send Complete'
             break
@@ -57,6 +57,7 @@ def server():
     serverSocket.bind(('',serverPort))
     serverSocket.listen(1)
     print "The server has started.\nUse ctrl-c to quit."
+    path = "./store/'game_state.txt'"
     while 1:
         connectionSocket, addr = serverSocket.accept()
         clientInput = connectionSocket.recv(1024)
@@ -64,10 +65,9 @@ def server():
         command = tokens[0]
         if command == 'recieve':
             print 'Request for game_state'
-            sendFile(connectionSocket, game_state)
+            sendFile(connectionSocket, path)
             connectionSocket.shutdown(SHUT_WR)
         elif command == 'send':
-            path = './store/game_state'
             fileMessage = connectionSocket.recv(1024)
             test = fileMessage.split(":", 1)
             if test[0] == "Failure":
