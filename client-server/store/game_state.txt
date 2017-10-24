@@ -1,2 +1,5 @@
+<<<<<<< HEAD
 Testing file for client-server game_state.
 sara is only slightly a loser.
+=======
+>>>>>>> 3b3d313c1631e12848386824534ed5a873c7d8cf
