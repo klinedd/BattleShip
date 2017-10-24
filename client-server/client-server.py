@@ -29,7 +29,8 @@ def client():
         message = raw_input('Client>')
         if message == 'q':
             break
-        # clientSocket.send(message)
+        clientSocket.send(message)
+        clientSocket.send(' ')
         if message == 'recieve':
             fileMessage = clientSocket.recv(1024)
             test = fileMessage.split(":", 1)
