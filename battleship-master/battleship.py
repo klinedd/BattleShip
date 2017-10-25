@@ -20,8 +20,8 @@ from pygame.locals import *
 # globals
 FPS = 30 #Determines the number of frames per second
 REVEALSPEED = 8 #Determines the speed at which the squares reveals after being clicked
-WINDOWWIDTH = 800 #Width of game window
-WINDOWHEIGHT = 600 #Height of game window
+WINDOWWIDTH = 320  #Width of game window
+WINDOWHEIGHT = 240 #Height of game window
 TILESIZE = 40 #Size of the squares in each grid(tile)
 MARKERSIZE = 40 #Size of the box which contatins the number that indicates how many ships in this row/col
 BUTTONHEIGHT = 20 #Height of a standard button

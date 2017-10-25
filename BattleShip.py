@@ -43,13 +43,13 @@ def print_board(s,board):
 			
 			if j != 9:
 				print( " | "),
-		print()
+		print
 		
 		#print a horizontal line
 		if i != 9:
 			print( "   ----------------------------------------------------------")
 		else: 
-			print() 
+			print("") 
 
 def user_place_ships(board,ships):
 
