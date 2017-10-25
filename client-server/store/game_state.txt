@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 asdlkfjasjf;lkajHello, this is a test!
+=======
+<<<<<<< HEAD
+Testing file for client-server game_state.
+SARA IS A MASSIVE LOOOOSER
+=======
+Hello, this is a test!
+>>>>>>> c6c253c4fd23394223704bdef229a322828512f9
+>>>>>>> e194550dbec408729223554a9e8f11e8f8aa42d3
