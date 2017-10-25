@@ -66,22 +66,22 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     #Fonts used by the game
-    DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-    BASICFONT = pygame.font.Font('freesansbold.ttf', 20)
-    BIGFONT = pygame.font.Font('freesansbold.ttf', 50)
+    DISPLAYSURF = pygame.display.set_mode([320,240])
+    BASICFONT = pygame.font.Font('freesansbold.ttf', 2)
+    BIGFONT = pygame.font.Font('freesansbold.ttf', 5)
     
     # Create and label the buttons
     HELP_SURF = BASICFONT.render("HELP", True, WHITE)
     HELP_RECT = HELP_SURF.get_rect()
-    HELP_RECT.topleft = (WINDOWWIDTH - 180, WINDOWHEIGHT - 350)
+    HELP_RECT.topleft = (WINDOWWIDTH - 18, WINDOWHEIGHT - 35)
     NEW_SURF = BASICFONT.render("NEW GAME", True, WHITE)
     NEW_RECT = NEW_SURF.get_rect()
-    NEW_RECT.topleft = (WINDOWWIDTH - 200, WINDOWHEIGHT - 200)
+    NEW_RECT.topleft = (WINDOWWIDTH - 20, WINDOWHEIGHT - 20)
 
     # The 'Shots:' label at the top
     SHOTS_SURF = BASICFONT.render("Shots: ", True, WHITE)
     SHOTS_RECT = SHOTS_SURF.get_rect()
-    SHOTS_RECT.topleft = (WINDOWWIDTH - 750, WINDOWHEIGHT - 570)
+    SHOTS_RECT.topleft = (WINDOWWIDTH - 75, WINDOWHEIGHT - 57)
     
     # Load the explosion graphics from the /img folder
     EXPLOSION_IMAGES = [
@@ -118,7 +118,7 @@ def run_game():
         # counter display (it needs to be here in order to refresh it)
         COUNTER_SURF = BASICFONT.render(str(len(counter)), True, WHITE)
         COUNTER_RECT = SHOTS_SURF.get_rect()
-        COUNTER_RECT.topleft = (WINDOWWIDTH - 680, WINDOWHEIGHT - 570)
+        COUNTER_RECT.topleft = (WINDOWWIDTH - 68, WINDOWHEIGHT - 57)
         
         # Fill background
         DISPLAYSURF.fill(BGCOLOR)
@@ -191,7 +191,7 @@ def blowup_animation(coord):
     """
     for image in EXPLOSION_IMAGES: # go through the list of images in the list of pictures and play them in sequence 
         #Determine the location and size to display the image
-        image = pygame.transform.scale(image, (TILESIZE+10, TILESIZE+10))
+        image = pygame.transform.scale(image, (TILESIZE+1, TILESIZE+1))
         DISPLAYSURF.blit(image, coord)
         pygame.display.flip()
         FPSCLOCK.tick(EXPLOSIONSPEED) #Determine the delay to play the image with
@@ -551,17 +551,17 @@ def show_gameover_screen(shots_fired):
     
     titleSurf, titleRect = make_text_objs(str(shots_fired) + ' shots', 
                                             BIGFONT, TEXTSHADOWCOLOR)
-    titleRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2 + 50))
+    titleRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2 + 5))
     DISPLAYSURF.blit(titleSurf, titleRect)
     
     titleSurf, titleRect = make_text_objs(str(shots_fired) + ' shots', 
                                             BIGFONT, TEXTCOLOR)
-    titleRect.center = (int(WINDOWWIDTH / 2) - 3, int(WINDOWHEIGHT / 2 + 50) - 3)
+    titleRect.center = (int(WINDOWWIDTH / 2) - 3, int(WINDOWHEIGHT / 2 + 5) - 3)
     DISPLAYSURF.blit(titleSurf, titleRect)
 
     pressKeySurf, pressKeyRect = make_text_objs(
         'Press a key to try to beat that score.', BASICFONT, TEXTCOLOR)
-    pressKeyRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2) + 100)
+    pressKeyRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2) + 10)
     DISPLAYSURF.blit(pressKeySurf, pressKeyRect)
     
     while check_for_keypress() == None: #Check if the user has pressed keys, if so start a new game
