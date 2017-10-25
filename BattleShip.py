@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import copy, random
 
 def print_board(s,board):
@@ -8,62 +10,62 @@ def print_board(s,board):
 
 	#find out if you are printing the computer or user board
 	player = "Computer"
-	if s == "u":
+	if(s == "u"):
 		player = "User"
 	
-	print "The " + player + "'s board look like this: \n"
+	print("The " + player + "'s board look like this: \n")
 
 	#print the horizontal numbers
-	print " ",
+	print( " "),
 	for i in range(10):
-		print "  " + str(i+1) + "  ",
-	print "\n"
+		print( "  " + str(i+1) + "  "),
+	print( "\n")
 
 	for i in range(10):
 	
 		#print the vertical line number
 		if i != 9: 
-			print str(i+1) + "  ",
+			print( str(i+1) + "  "),
 		else:
-			print str(i+1) + " ",
+			print( str(i+1) + " "),
 
 		#print the board values, and cell dividers
 		for j in range(10):
 			if board[i][j] == -1:
-				print ' ',	
+				print( ' '),	
 			elif s == "u":
-				print board[i][j],
+				print( board[i][j]),
 			elif s == "c":
 				if board[i][j] == "*" or board[i][j] == "$":
-					print board[i][j],
+					print( board[i][j]),
 				else:
-					print " ",
+					print( " "),
 			
 			if j != 9:
-				print " | ",
-		print
+				print( " | "),
+		print()
 		
 		#print a horizontal line
 		if i != 9:
-			print "   ----------------------------------------------------------"
+			print( "   ----------------------------------------------------------")
 		else: 
-			print 
+			print() 
 
 def user_place_ships(board,ships):
 
 	for ship in ships.keys():
 
-		#get coordinates from user and vlidate the postion
+		#get coordinates from user and validate the postion
 		valid = False
 		while(not valid):
 
 			print_board("u",board)
-			print "Placing a/an " + ship
+			print( "Placing a/an " + ship)
 			x,y = get_coor()
 			ori = v_or_h()
 			valid = validate(board,ships[ship],x,y,ori)
 			if not valid:
-				print "Cannot place a ship there.\nPlease take a look at the board and try again."
+				print( "Cannot place a ship there.\nPlease take a look at the board and try again.")
 				raw_input("Hit ENTER to continue")
 
 		#place the ship
@@ -92,7 +94,7 @@ def computer_place_ships(board,ships):
 			valid = validate(board,ships[ship],x,y,ori)
 
 		#place the ship
-		print "Computer placing a/an " + ship
+		print( "Computer placing a/an " + ship)
 		board = place_ship(board,ships[ship],ship[0],ori,x,y)
 	
 	return board
@@ -137,7 +139,7 @@ def v_or_h():
 		if user_input == "v" or user_input == "h":
 			return user_input
 		else:
-			print "Invalid input. Please only enter v or h"
+			print( "Invalid input. Please only enter v or h")
 
 def get_coor():
 	
@@ -161,9 +163,9 @@ def get_coor():
 			return coor
 		
 		except ValueError:
-			print "Invalid entry. Please enter only numeric values for coordinates"
+			print( "Invalid entry. Please enter only numeric values for coordinates")
 		except Exception as e:
-			print e
+			print( e)
 
 def make_move(board,x,y):
 	
@@ -183,16 +185,16 @@ def user_move(board):
 		x,y = get_coor()
 		res = make_move(board,x,y)
 		if res == "hit":
-			print "Hit at " + str(x+1) + "," + str(y+1)
+			print( "Hit at " + str(x+1) + "," + str(y+1))
 			check_sink(board,x,y)
 			board[x][y] = '$'
 			if check_win(board):
 				return "WIN"
 		elif res == "miss":
-			print "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss."
+			print( "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss.")
 			board[x][y] = "*"
 		elif res == "try again":
-			print "Sorry, that coordinate was already hit. Please try again"	
+			print( "Sorry, that coordinate was already hit. Please try again")	
 
 		if res != "try again":
 			return board
@@ -206,13 +208,13 @@ def computer_move(board):
 		y = random.randint(1,10)-1
 		res = make_move(board,x,y)
 		if res == "hit":
-			print "Hit at " + str(x+1) + "," + str(y+1)
+			print( "Hit at " + str(x+1) + "," + str(y+1))
 			check_sink(board,x,y)
 			board[x][y] = '$'
 			if check_win(board):
 				return "WIN"
 		elif res == "miss":
-			print "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss."
+			print( "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss.")
 			board[x][y] = "*"
 
 		if res != "try again":
@@ -236,7 +238,7 @@ def check_sink(board,x,y):
 	#mark cell as hit and check if sunk
 	board[-1][ship] -= 1
 	if board[-1][ship] == 0:
-		print ship + " Sunk"
+		print( ship + " Sunk")
 		
 
 def check_win(board):
@@ -287,7 +289,7 @@ def main():
 
 		#check if user won
 		if comp_board == "WIN":
-			print "User WON! :)"
+			print( "User WON! :)")
 			quit()
 			
 		#display current computer board
@@ -299,7 +301,7 @@ def main():
 		
 		#check if computer move
 		if user_board == "WIN":
-			print "Computer WON! :("
+			print( "Computer WON! :(")
 			quit()
 			
 		#display user board
