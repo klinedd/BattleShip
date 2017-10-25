@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 Testing file for client-server game_state.
 SARA IS A MASSIVE LOOOOSER
+=======
+Hello, this is a test!
+>>>>>>> c6c253c4fd23394223704bdef229a322828512f9

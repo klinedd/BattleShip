@@ -30,6 +30,7 @@ def client():
         if message == 'q':
             break
         clientSocket.send(message)
+        clientSocket.send(' ')
         if message == 'recieve':
             fileMessage = clientSocket.recv(1024)
             test = fileMessage.split(":", 1)
@@ -44,9 +45,11 @@ def client():
                 f.close()
             break
         elif message == 'send':
-            sendFile(clientSocket, path)
-            clientSocket.shutdown(SHUT_WR)
-            print 'Send Complete'
+            request = clientSocket.recv(1024)
+            if request == 'send file':
+                sendFile(clientSocket, path)
+                clientSocket.shutdown(SHUT_WR)
+                print 'Send Complete'
             break
         else:
             print ('Bad command: '+ message)
@@ -69,6 +72,7 @@ def server():
             sendFile(connectionSocket, path)
             connectionSocket.shutdown(SHUT_WR)
         elif command == 'send':
+            connectionSocket.send('send file')
             fileMessage = connectionSocket.recv(1024)
             test = fileMessage.split(":", 1)
             if test[0] == "Failure":
