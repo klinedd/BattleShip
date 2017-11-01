@@ -31,9 +31,7 @@ Board[3][5] = 'red'
 Board[4][6] = 'grey'
 Board[5][7] = 'yellow'
 
-
-while 1:
-    #set the frequency on how often to check for user input
+def draw_board():
     clock.tick(13)
     screen.fill((255,255,255))
     for i in range(w):
@@ -51,7 +49,6 @@ while 1:
                 Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
-
     cursor = pygame.Rect(x, y, 12, 12)
     pygame.draw.rect(screen, (0,0,0), cursor)
     pygame.display.update()
@@ -61,6 +58,11 @@ while 1:
         pygame.draw.line(screen, (0,0,0), (x1, y1+(i*24)+24), (x1+24*size, y1+(i*24)+24))
         pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
+
+
+while 1:
+    #set the frequency on how often to check for user input
+    draw_board()
 
     #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
     #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
@@ -78,6 +80,8 @@ while 1:
 	print (y/24+1)
         if Board[x/24][y/24] == 'grey':
             Board[x/24][y/24]  = 'red'
+        elif Board[x/24][y/24]  == 'red':
+            print 'invalid'
         else:
             Board[x/24][y/24] = 'yellow'
 
@@ -91,7 +95,7 @@ while 1:
             screen.fill((255,255,255))
 
 def place_ships():
-
+    pass
 
 # def print_board(s,board):
 
