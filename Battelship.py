@@ -44,7 +44,7 @@ while 1:
     #draws the lines for the grid on the screen
     for i in range(size - 1):
         pygame.draw.line(screen, (0,0,0), (x1, y1+(i*24)+24), (x1+24*size, y1+(i*24)+24))
-        pygame.draw.line(screen, (0,0,0), (x1+10+(i*10), y1), (x1+10+(i*10), y1+10*size))
+        pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
 
     #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
