@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 import copy, random, math
 import pygame, sys
@@ -6,7 +6,7 @@ from pygame.locals import *
 
 pygame.init()
 
-screen = pygame.display.set_mode((240, 320))
+screen = pygame.display.set_mode((320,240))
 clock = pygame.time.Clock()
 screen.fill((255,255,255))
 size = 10
@@ -74,13 +74,12 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        print 'shoot'
-        if Board[x/24 + 1][y/24 + 1] == 'grey':
-            print 'hit'
-            Board[x/24 + 1][y/24 + 1]  = 'red'
+        print (x/24+1)
+	print (y/24+1)
+        if Board[x/24][y/24] == 'grey':
+            Board[x/24][y/24]  = 'red'
         else:
-            print 'miss'
-            Board[x/24 + 1][y/24 + 1] = 'yellow'
+            Board[x/24][y/24] = 'yellow'
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
