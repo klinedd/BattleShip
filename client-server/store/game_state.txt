@@ -3,12 +3,23 @@ Testing file for client-server game_state.
 
 move 1: blah blah blah
 
+<<<<<<< HEAD
+
 move 2: BAM BAM BAM BAM.... BOOOOOOM
 
+
+=======
+move 2: BAM BAM BAM BAM.... BOOOOOOM
+
+>>>>>>> 60f15476b4ce320b0bedceef87b6a182b2ad84b6
 move 3: pow pow pow.... esplosion!
 
 move 4: NUKE!! 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 60f15476b4ce320b0bedceef87b6a182b2ad84b6
 GAME OVER
 
 DUSTIN WINS
