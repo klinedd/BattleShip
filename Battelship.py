@@ -91,6 +91,8 @@ while 1:
         elif event.type == KEYDOWN and event.key == K_SPACE:
             screen.fill((255,255,255))
 
+def place_ships():
+
 
 # def print_board(s,board):
 
