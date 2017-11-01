@@ -8,11 +8,21 @@ pygame.init()
 
 screen = pygame.display.set_mode((240, 320))
 clock = pygame.time.Clock()
-screen.fill((0,0,0))
+screen.fill((255,255,255))
 size = 10
 
+#keep track of where the key presses have moved the 'cursor'
 x = 0
 y = 0
+
+#used to draw the grid lines
+x1 = 0
+y1 = 0
+
+#create matrix that will hold information of the board game
+w, h = 10,10
+Board = [[0 for x in range(w)] for y in range(h)]
+
 
 
 while 1:
@@ -21,7 +31,7 @@ while 1:
 
     #draws the lines for the grid on the screen
     for i in range(size - 1):
-        pygame.draw.line(screen, (0,0,0), (x1, y1+(i*10)+10), (x1+10*size, y1+(i*10)+10))
+        pygame.draw.line(screen, (0,0,0), (x1, y1+(i*24)+24), (x1+24*size, y1+(i*24)+24))
         pygame.draw.line(screen, (0,0,0), (x1+10+(i*10), y1), (x1+10+(i*10), y1+10*size))
     pygame.display.update()
 
