@@ -12,11 +12,8 @@ screen.fill((255,255,255))
 size = 10
 
 #keep track of where the key presses have moved the 'cursor'
-x = 5
-y = 5
-
-x_old = 5
-y_old = 5
+x = 20
+y = 20
 
 #used to draw the grid lines
 x1 = 0
@@ -26,23 +23,27 @@ y1 = 0
 w, h = 10,10
 Board = [[0 for x in range(w)] for y in range(h)]
 
-cursorPos = [[0 for x in range(w)] for y in range(h)]
+for i in range(w):
+    for j in range(h):
+        Board[i][j] = 'white'
 
 
 while 1:
     #set the frequency on how often to check for user input
     clock.tick(13)
-    
-    if x != x_old | y != y_old :
-    	Rect = pygame.Rect(x_old, y_old, 14, 14)
-    	pygame.draw.rect(screen, (255,255,255), Rect)
-    	
-    Rect = pygame.Rect(x, y, 14, 14)
-    pygame.draw.rect(screen, (0,0,0), Rect)
-    
+    screen.fill((255,255,255))
+    for i in range(w):
+        for j in range(h):
+            if Board[i][j] == 'white':
+                Rect = pygame.Rect(x1*w, y1*h, 14, 14)
+                pygame.draw.rect(screen, (255,255,255), Rect)
+
+    cursor = pygame.Rect(x, y, 12, 12)
+    pygame.draw.rect(screen, (0,0,0), cursor)
+    pygame.display.update()
 
     #draws the lines for the grid on the screen
-    for i in range(size - 1):
+    for i in range(size):
         pygame.draw.line(screen, (0,0,0), (x1, y1+(i*24)+24), (x1+24*size, y1+(i*24)+24))
         pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
@@ -58,6 +59,8 @@ while 1:
         if y > 24: y-=24
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
+    if key[pygame.K_s]:
+        
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
@@ -72,14 +75,14 @@ while 1:
 # def print_board(s,board):
 
 # 	# WARNING: This function was crafted with a lot of attention. Please be aware that any
-# 	#          modifications to this function will result in a poor output of the board 
-# 	#          layout. You have been warn. 
+# 	#          modifications to this function will result in a poor output of the board
+# 	#          layout. You have been warn.
 
 # 	#find out if you are printing the computer or user board
 # 	player = "Computer"
 # 	if(s == "u"):
 # 		player = "User"
-	
+
 # 	print("The " + player + "'s board look like this: \n")
 
 # 	#print the horizontal numbers
@@ -89,9 +92,9 @@ while 1:
 # 	print( "\n")
 
 # 	for i in range(10):
-	
+
 # 		#print the vertical line number
-# 		if i != 9: 
+# 		if i != 9:
 # 			print( str(i+1) + "  "),
 # 		else:
 # 			print( str(i+1) + " "),
@@ -99,7 +102,7 @@ while 1:
 # 		#print the board values, and cell dividers
 # 		for j in range(10):
 # 			if board[i][j] == -1:
-# 				print( ' '),	
+# 				print( ' '),
 # 			elif s == "u":
 # 				print( board[i][j]),
 # 			elif s == "c":
@@ -107,16 +110,16 @@ while 1:
 # 					print( board[i][j]),
 # 				else:
 # 					print( " "),
-			
+
 # 			if j != 9:
 # 				print( " | "),
 # 		print
-		
+
 # 		#print a horizontal line
 # 		if i != 9:
 # 			print( "   ----------------------------------------------------------")
-# 		else: 
-# 			print("") 
+# 		else:
+# 			print("")
 
 # def user_place_ships(board,ships):
 
@@ -138,7 +141,7 @@ while 1:
 # 		#place the ship
 # 		board = place_ship(board,ships[ship],ship[0],ori,x,y)
 # 		print_board("u",board)
-		
+
 # 	raw_input("Done placing user ships. Hit ENTER to continue")
 # 	return board
 
@@ -146,7 +149,7 @@ while 1:
 # def computer_place_ships(board,ships):
 
 # 	for ship in ships.keys():
-	
+
 # 		#genreate random coordinates and vlidate the postion
 # 		valid = False
 # 		while(not valid):
@@ -154,7 +157,7 @@ while 1:
 # 			x = random.randint(1,10)-1
 # 			y = random.randint(1,10)-1
 # 			o = random.randint(0,1)
-# 			if o == 0: 
+# 			if o == 0:
 # 				ori = "v"
 # 			else:
 # 				ori = "h"
@@ -163,7 +166,7 @@ while 1:
 # 		#place the ship
 # 		print( "Computer placing a/an " + ship)
 # 		board = place_ship(board,ships[ship],ship[0],ori,x,y)
-	
+
 # 	return board
 
 
@@ -178,7 +181,7 @@ while 1:
 # 			board[x][y+i] = s
 
 # 	return board
-	
+
 # def validate(board,ship,x,y,ori):
 
 # 	#validate the ship can be placed at given coordinates
@@ -195,7 +198,7 @@ while 1:
 # 			for i in range(ship):
 # 				if board[x][y+i] != -1:
 # 					return False
-		
+
 # 	return True
 
 # def v_or_h():
@@ -209,7 +212,7 @@ while 1:
 # 			print( "Invalid input. Please only enter v or h")
 
 # def get_coor():
-	
+
 # 	while (True):
 # 		user_input = raw_input("Please enter coordinates (row,col) ? ")
 # 		try:
@@ -228,14 +231,14 @@ while 1:
 
 # 			#if everything is ok, return coordinates
 # 			return coor
-		
+
 # 		except ValueError:
 # 			print( "Invalid entry. Please enter only numeric values for coordinates")
 # 		except Exception as e:
 # 			print( e)
 
 # def make_move(board,x,y):
-	
+
 # 	#make a move on the board and return the result, hit, miss or try again for repeat hit
 # 	if board[x][y] == -1:
 # 		return "miss"
@@ -245,7 +248,7 @@ while 1:
 # 		return "hit"
 
 # def user_move(board):
-	
+
 # 	#get coordinates from the user and try to make move
 # 	#if move is a hit, check ship sunk and win condition
 # 	while(True):
@@ -261,13 +264,13 @@ while 1:
 # 			print( "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss.")
 # 			board[x][y] = "*"
 # 		elif res == "try again":
-# 			print( "Sorry, that coordinate was already hit. Please try again")	
+# 			print( "Sorry, that coordinate was already hit. Please try again")
 
 # 		if res != "try again":
 # 			return board
 
 # def computer_move(board):
-	
+
 # 	#generate user coordinates from the user and try to make move
 # 	#if move is a hit, check ship sunk and win condition
 # 	while(True):
@@ -285,9 +288,9 @@ while 1:
 # 			board[x][y] = "*"
 
 # 		if res != "try again":
-			
+
 # 			return board
-	
+
 # def check_sink(board,x,y):
 
 # 	#figure out what ship was hit
@@ -296,20 +299,20 @@ while 1:
 # 	elif board[x][y] == "B":
 # 		ship = "Battleship"
 # 	elif board[x][y] == "S":
-# 		ship = "Submarine" 
+# 		ship = "Submarine"
 # 	elif board[x][y] == "D":
 # 		ship = "Destroyer"
-# 	elif board[x][y] == "P": 
+# 	elif board[x][y] == "P":
 # 		ship = "Patrol Boat"
-	
+
 # 	#mark cell as hit and check if sunk
 # 	board[-1][ship] -= 1
 # 	if board[-1][ship] == 0:
 # 		print( ship + " Sunk")
-		
+
 
 # def check_win(board):
-	
+
 # 	#simple for loop to check all cells in 2d board
 # 	#if any cell contains a char that is not a hit or a miss return false
 # 	for i in range(10):
@@ -358,14 +361,14 @@ while 1:
 # 		if comp_board == "WIN":
 # 			print( "User WON! :)")
 # 			quit()
-			
+
 # 		#display current computer board
 # 		print_board("c",comp_board)
 # 		raw_input("To end user turn hit ENTER")
 
 # 		#computer move
 # 		user_board = computer_move(user_board)
-		
+
 # 		#check if computer move
 # 		if user_board == "WIN":
 #!/usr/bin/env python3
@@ -402,14 +405,14 @@ cursorPos = [[0 for x in range(w)] for y in range(h)]
 while 1:
     #set the frequency on how often to check for user input
     clock.tick(13)
-    
+
     if x != x_old | y != y_old :
     	Rect = pygame.Rect(x_old, y_old, 14, 14)
     	pygame.draw.rect(screen, (255,255,255), Rect)
-    	
+
     Rect = pygame.Rect(x, y, 14, 14)
     pygame.draw.rect(screen, (0,0,0), Rect)
-    
+
 
     #draws the lines for the grid on the screen
     for i in range(size - 1):
@@ -442,14 +445,14 @@ while 1:
 # def print_board(s,board):
 
 # 	# WARNING: This function was crafted with a lot of attention. Please be aware that any
-# 	#          modifications to this function will result in a poor output of the board 
-# 	#          layout. You have been warn. 
+# 	#          modifications to this function will result in a poor output of the board
+# 	#          layout. You have been warn.
 
 # 	#find out if you are printing the computer or user board
 # 	player = "Computer"
 # 	if(s == "u"):
 # 		player = "User"
-	
+
 # 	print("The " + player + "'s board look like this: \n")
 
 # 	#print the horizontal numbers
@@ -459,9 +462,9 @@ while 1:
 # 	print( "\n")
 
 # 	for i in range(10):
-	
+
 # 		#print the vertical line number
-# 		if i != 9: 
+# 		if i != 9:
 # 			print( str(i+1) + "  "),
 # 		else:
 # 			print( str(i+1) + " "),
@@ -469,7 +472,7 @@ while 1:
 # 		#print the board values, and cell dividers
 # 		for j in range(10):
 # 			if board[i][j] == -1:
-# 				print( ' '),	
+# 				print( ' '),
 # 			elif s == "u":
 # 				print( board[i][j]),
 # 			elif s == "c":
@@ -477,16 +480,16 @@ while 1:
 # 					print( board[i][j]),
 # 				else:
 # 					print( " "),
-			
+
 # 			if j != 9:
 # 				print( " | "),
 # 		print
-		
+
 # 		#print a horizontal line
 # 		if i != 9:
 # 			print( "   ----------------------------------------------------------")
-# 		else: 
-# 			print("") 
+# 		else:
+# 			print("")
 
 # def user_place_ships(board,ships):
 
@@ -508,7 +511,7 @@ while 1:
 # 		#place the ship
 # 		board = place_ship(board,ships[ship],ship[0],ori,x,y)
 # 		print_board("u",board)
-		
+
 # 	raw_input("Done placing user ships. Hit ENTER to continue")
 # 	return board
 
@@ -516,7 +519,7 @@ while 1:
 # def computer_place_ships(board,ships):
 
 # 	for ship in ships.keys():
-	
+
 # 		#genreate random coordinates and vlidate the postion
 # 		valid = False
 # 		while(not valid):
@@ -524,7 +527,7 @@ while 1:
 # 			x = random.randint(1,10)-1
 # 			y = random.randint(1,10)-1
 # 			o = random.randint(0,1)
-# 			if o == 0: 
+# 			if o == 0:
 # 				ori = "v"
 # 			else:
 # 				ori = "h"
@@ -533,7 +536,7 @@ while 1:
 # 		#place the ship
 # 		print( "Computer placing a/an " + ship)
 # 		board = place_ship(board,ships[ship],ship[0],ori,x,y)
-	
+
 # 	return board
 
 
@@ -548,7 +551,7 @@ while 1:
 # 			board[x][y+i] = s
 
 # 	return board
-	
+
 # def validate(board,ship,x,y,ori):
 
 # 	#validate the ship can be placed at given coordinates
@@ -565,7 +568,7 @@ while 1:
 # 			for i in range(ship):
 # 				if board[x][y+i] != -1:
 # 					return False
-		
+
 # 	return True
 
 # def v_or_h():
@@ -579,7 +582,7 @@ while 1:
 # 			print( "Invalid input. Please only enter v or h")
 
 # def get_coor():
-	
+
 # 	while (True):
 # 		user_input = raw_input("Please enter coordinates (row,col) ? ")
 # 		try:
@@ -598,14 +601,14 @@ while 1:
 
 # 			#if everything is ok, return coordinates
 # 			return coor
-		
+
 # 		except ValueError:
 # 			print( "Invalid entry. Please enter only numeric values for coordinates")
 # 		except Exception as e:
 # 			print( e)
 
 # def make_move(board,x,y):
-	
+
 # 	#make a move on the board and return the result, hit, miss or try again for repeat hit
 # 	if board[x][y] == -1:
 # 		return "miss"
@@ -615,7 +618,7 @@ while 1:
 # 		return "hit"
 
 # def user_move(board):
-	
+
 # 	#get coordinates from the user and try to make move
 # 	#if move is a hit, check ship sunk and win condition
 # 	while(True):
@@ -631,13 +634,13 @@ while 1:
 # 			print( "Sorry, " + str(x+1) + "," + str(y+1) + " is a miss.")
 # 			board[x][y] = "*"
 # 		elif res == "try again":
-# 			print( "Sorry, that coordinate was already hit. Please try again")	
+# 			print( "Sorry, that coordinate was already hit. Please try again")
 
 # 		if res != "try again":
 # 			return board
 
 # def computer_move(board):
-	
+
 # 	#generate user coordinates from the user and try to make move
 # 	#if move is a hit, check ship sunk and win condition
 # 	while(True):
@@ -655,9 +658,9 @@ while 1:
 # 			board[x][y] = "*"
 
 # 		if res != "try again":
-			
+
 # 			return board
-	
+
 # def check_sink(board,x,y):
 
 # 	#figure out what ship was hit
@@ -666,20 +669,20 @@ while 1:
 # 	elif board[x][y] == "B":
 # 		ship = "Battleship"
 # 	elif board[x][y] == "S":
-# 		ship = "Submarine" 
+# 		ship = "Submarine"
 # 	elif board[x][y] == "D":
 # 		ship = "Destroyer"
-# 	elif board[x][y] == "P": 
+# 	elif board[x][y] == "P":
 # 		ship = "Patrol Boat"
-	
+
 # 	#mark cell as hit and check if sunk
 # 	board[-1][ship] -= 1
 # 	if board[-1][ship] == 0:
 # 		print( ship + " Sunk")
-		
+
 
 # def check_win(board):
-	
+
 # 	#simple for loop to check all cells in 2d board
 # 	#if any cell contains a char that is not a hit or a miss return false
 # 	for i in range(10):
@@ -728,32 +731,31 @@ while 1:
 # 		if comp_board == "WIN":
 # 			print( "User WON! :)")
 # 			quit()
-			
+
 # 		#display current computer board
 # 		print_board("c",comp_board)
 # 		raw_input("To end user turn hit ENTER")
 
 # 		#computer move
 # 		user_board = computer_move(user_board)
-		
+
 # 		#check if computer move
 # 		if user_board == "WIN":
 # 			print( "Computer WON! :(")
 # 			quit()
-			
+
 # 		#display user board
 # 		print_board("u",user_board)
 # 		raw_input("To end computer turn hit ENTER")
-	
+
 # if __name__=="__main__":
 # 	main()
 # 			print( "Computer WON! :(")
 # 			quit()
-			
+
 # 		#display user board
 # 		print_board("u",user_board)
 # 		raw_input("To end computer turn hit ENTER")
-	
+
 # if __name__=="__main__":
 # 	main()
-
