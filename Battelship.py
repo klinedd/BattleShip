@@ -27,6 +27,8 @@ for i in range(w):
     for j in range(h):
         Board[i][j] = 'white'
 
+Board[3][5] = 'red'
+
 
 while 1:
     #set the frequency on how often to check for user input
@@ -35,8 +37,12 @@ while 1:
     for i in range(w):
         for j in range(h):
             if Board[i][j] == 'white':
-                Rect = pygame.Rect(x1*w, y1*h, 14, 14)
+                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
                 pygame.draw.rect(screen, (255,255,255), Rect)
+            if Board[i][j] == 'red':
+                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                pygame.draw.rect(screen, (255,0,0), Rect)
+
 
     cursor = pygame.Rect(x, y, 12, 12)
     pygame.draw.rect(screen, (0,0,0), cursor)
@@ -60,7 +66,7 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        
+        pass
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
