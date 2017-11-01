@@ -12,8 +12,8 @@ screen.fill((255,255,255))
 size = 10
 
 #keep track of where the key presses have moved the 'cursor'
-x = 1
-y = 1
+x = 0
+y = 0
 
 #used to draw the grid lines
 x1 = 0
@@ -74,10 +74,13 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        if Board[math.floor(x/24)][math.floor(y/24)] == 'grey':
-            Board[math.floor(x/24)][math.floor(y/24)] == 'red'
+        print 'shoot'
+        if Board[x/24 + 1][y/24 + 1] == 'grey':
+            print 'hit'
+            Board[x/24 + 1][y/24 + 1]  = 'red'
         else:
-            Board[math.floor(x/24)][math.floor(y/24)] == 'yellow'
+            print 'miss'
+            Board[x/24 + 1][y/24 + 1] = 'yellow'
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
