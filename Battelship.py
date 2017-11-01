@@ -50,7 +50,7 @@ def draw_board():
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
-    cursor = pygame.Rect(x, y, 12, 12)
+    cursor = pygame.Rect(x-3, y-3, 12, 12)
     pygame.draw.rect(screen, (0,0,0), cursor)
     pygame.display.update()
 
