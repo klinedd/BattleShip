@@ -12,8 +12,8 @@ screen.fill((255,255,255))
 size = 10
 
 #keep track of where the key presses have moved the 'cursor'
-x = 20
-y = 20
+x = 1
+y = 1
 
 #used to draw the grid lines
 x1 = 0
@@ -28,6 +28,8 @@ for i in range(w):
         Board[i][j] = 'white'
 
 Board[3][5] = 'red'
+Board[4][6] = 'grey'
+Board[5][7] = 'yellow'
 
 
 while 1:
@@ -42,6 +44,12 @@ while 1:
             if Board[i][j] == 'red':
                 Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
                 pygame.draw.rect(screen, (255,0,0), Rect)
+            if Board[i][j] == 'yellow':
+                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                pygame.draw.rect(screen, (249,237,2), Rect)
+            if Board[i][j] == 'grey':
+                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                pygame.draw.rect(screen, (122,111,111), Rect)
 
 
     cursor = pygame.Rect(x, y, 12, 12)
@@ -66,10 +74,10 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        if board[x][y] == 'grey':
-            board[x][y] == 'red'
+        if board[math.floor(x/24)][math.floor(y/24)] == 'grey':
+            board[math.floor(x/24)][math.floor(y/24)] == 'red'
         else:
-            board[x][y] == 'yellow'
+            board[math.floor(x/24)][math.floor(y/24)] == 'yellow'
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
