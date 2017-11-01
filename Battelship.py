@@ -30,9 +30,9 @@ for i in range(w):
     for j in range(h):
         Board[i][j] = 'white'
 
-Board[0][0] = 'grey'
+Board[0][0] = 'A'
 Board[3][5] = 'red'
-Board[4][6] = 'grey'
+Board[4][6] = 'A'
 Board[5][7] = 'yellow'
 
 def draw_board(board):
@@ -49,7 +49,7 @@ def draw_board(board):
             if board[i][j] == 'yellow':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (249,237,2), Rect)
-            if board[i][j] == 'grey':
+            if board[i][j] == 'A':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
@@ -76,23 +76,84 @@ def key_press(key):
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
         print (x/24+1, y/24+1)
-        if Board[x/24][y/24] == 'grey':
+        if Board[x/24][y/24] == 'A':
             Board[x/24][y/24]  = 'red'
         elif Board[x/24][y/24]  == 'red':
             print 'invalid'
         else:
             Board[x/24][y/24] = 'yellow'
 
+def ship_location(key):
+    global x
+    global y
+    print 'get ship location'
+    print x/24, y/24
+    if key[pygame.K_p]:
+        Board[x/24][y/24] = 'A'
+        return 1
+    if key[pygame.K_RIGHT]:
+        if x < 24*(size-1): x+=24
+    if key[pygame.K_LEFT]:
+        if x > 24: x-=24
+    if key[pygame.K_UP]:
+        if y > 24: y-=24
+    if key[pygame.K_DOWN]:
+        if y < 24*(size-1): y+=24
+
+def ship_direction(key):
+    print 'get ship direction'
+    if key[pygame.K_RIGHT] and (x/24+4) < 10:
+        for i in range(1, 5):
+            Board[x/24 + i][y/24] = 'A'
+            print 'r'
+            return 1
+    if key[pygame.K_LEFT] and (x/24-4) > 0:
+        for i in range(1, 5):
+            Board[x/24 - i][y/24] = 'A'
+            print 'l'
+            return 1
+    if key[pygame.K_UP] and (y/24+4) < 10:
+        for i in range(1, 5):
+            Board[x/24][y/24 + i] = 'A'
+            print 'u'
+            return 1
+    if key[pygame.K_DOWN] and (y/24-4) > 0:
+        for i in range(1, 5):
+            Board[x/24][y/24 - i] = 'A'
+            print 'd'
+            return 1
+    else:
+        return 0
+
+def place_ship():
+    global x
+    global y
+    global Board
+
+    print "place ship"
+
+    while 1:
+        clock.tick(13)
+        draw_board(Board)
+        key = pygame.key.get_pressed()
+        if ship_location(key) == 1:
+            break
+        pygame.event.pump()
+
+    while 1:
+        clock.tick(13)
+        key = pygame.key.get_pressed()
+        if ship_direction(key) == 1:
+            draw_board(Board)
+            break
+        pygame.event.pump()
+
+draw_board(Board)
+place_ship()
+
 while 1:
     #set the frequency on how often to check for user input
     draw_board(Board)
-
-    # for ship in ships:
-    #     if ship == 'A'
-    #         for i in range(map(ship)):
-    #             key = pygame.key.get_pressed()
-
-
 
     #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
     #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
@@ -105,8 +166,6 @@ while 1:
             sys.exit()
         elif event.type == KEYDOWN and event.key == K_ESCAPE:
             sys.exit()
-        elif event.type == KEYDOWN and event.key == K_SPACE:
-            screen.fill((255,255,255))
 
 
 # def print_board(s,board):
