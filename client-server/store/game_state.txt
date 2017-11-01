@@ -1,1 +1,14 @@
 Testing file for client-server game_state.
+
+
+move 1: blah blah blah
+
+move 2: BAM BAM BAM BAM.... BOOOOOOM
+
+move 3: pow pow pow.... esplosion!
+
+move 4: NUKE!! 
+
+GAME OVER
+
+DUSTIN WINS
