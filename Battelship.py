@@ -12,6 +12,7 @@ screen.fill((255,255,255))
 size = 10
 
 ships = ['A', 'B', 'S', 'C', 'D']
+map = {'A': 5, 'B': 4, 'S': 3, 'C': 3, 'D': 2}
 
 #keep track of where the key presses have moved the 'cursor'
 x = 0
@@ -62,17 +63,9 @@ def draw_board(board):
         pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
 
-while 1:
-    #set the frequency on how often to check for user input
-    draw_board(Board)
-
-    # for i in range(5):
-    #     print 'place Aircraft Carrier'
-
-
-    #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
-    #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
-    key = pygame.key.get_pressed()
+def key_press(key):
+    global x
+    global y
     if key[pygame.K_RIGHT]:
         if x < 24*(size-1): x+=24
     if key[pygame.K_LEFT]:
@@ -82,14 +75,29 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        print (x/24+1)
-	print (y/24+1)
+        print (x/24+1, y/24+1)
         if Board[x/24][y/24] == 'grey':
             Board[x/24][y/24]  = 'red'
         elif Board[x/24][y/24]  == 'red':
             print 'invalid'
         else:
             Board[x/24][y/24] = 'yellow'
+
+while 1:
+    #set the frequency on how often to check for user input
+    draw_board(Board)
+
+    # for ship in ships:
+    #     if ship == 'A'
+    #         for i in range(map(ship)):
+    #             key = pygame.key.get_pressed()
+
+
+
+    #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
+    #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
+    key = pygame.key.get_pressed()
+    key_press(key)
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
