@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
 import copy, random, math
 import pygame, sys
@@ -6,7 +6,7 @@ from pygame.locals import *
 
 pygame.init()
 
-screen = pygame.display.set_mode((240, 320))
+screen = pygame.display.set_mode((320,240))
 clock = pygame.time.Clock()
 screen.fill((255,255,255))
 size = 10
