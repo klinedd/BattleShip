@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import copy, random
+import copy, random, math
 import pygame, sys
 from pygame.locals import *
 
