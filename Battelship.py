@@ -74,10 +74,10 @@ while 1:
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        if board[math.floor(x/24)][math.floor(y/24)] == 'grey':
-            board[math.floor(x/24)][math.floor(y/24)] == 'red'
+        if Board[math.floor(x/24)][math.floor(y/24)] == 'grey':
+            Board[math.floor(x/24)][math.floor(y/24)] == 'red'
         else:
-            board[math.floor(x/24)][math.floor(y/24)] == 'yellow'
+            Board[math.floor(x/24)][math.floor(y/24)] == 'yellow'
 
     #event handlers to eithe quit the program or whipe the board back to  a blank grid
     for event in pygame.event.get():
