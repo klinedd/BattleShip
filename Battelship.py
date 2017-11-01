@@ -11,6 +11,8 @@ clock = pygame.time.Clock()
 screen.fill((255,255,255))
 size = 10
 
+ships = ['A', 'B', 'S', 'C', 'D']
+
 #keep track of where the key presses have moved the 'cursor'
 x = 0
 y = 0
@@ -32,21 +34,21 @@ Board[3][5] = 'red'
 Board[4][6] = 'grey'
 Board[5][7] = 'yellow'
 
-def draw_board():
+def draw_board(board):
     clock.tick(13)
     screen.fill((255,255,255))
     for i in range(w):
         for j in range(h):
-            if Board[i][j] == 'white':
+            if board[i][j] == 'white':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (255,255,255), Rect)
-            if Board[i][j] == 'red':
+            if board[i][j] == 'red':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (255,0,0), Rect)
-            if Board[i][j] == 'yellow':
+            if board[i][j] == 'yellow':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (249,237,2), Rect)
-            if Board[i][j] == 'grey':
+            if board[i][j] == 'grey':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
@@ -60,10 +62,13 @@ def draw_board():
         pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
 
-
 while 1:
     #set the frequency on how often to check for user input
-    draw_board()
+    draw_board(Board)
+
+    # for i in range(5):
+    #     print 'place Aircraft Carrier'
+
 
     #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
     #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
@@ -95,8 +100,6 @@ while 1:
         elif event.type == KEYDOWN and event.key == K_SPACE:
             screen.fill((255,255,255))
 
-def place_ships():
-    pass
 
 # def print_board(s,board):
 
