@@ -27,6 +27,7 @@ for i in range(w):
     for j in range(h):
         Board[i][j] = 'white'
 
+Board[0][0] = 'grey'
 Board[3][5] = 'red'
 Board[4][6] = 'grey'
 Board[5][7] = 'yellow'
@@ -37,16 +38,16 @@ def draw_board():
     for i in range(w):
         for j in range(h):
             if Board[i][j] == 'white':
-                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (255,255,255), Rect)
             if Board[i][j] == 'red':
-                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (255,0,0), Rect)
             if Board[i][j] == 'yellow':
-                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (249,237,2), Rect)
             if Board[i][j] == 'grey':
-                Rect = pygame.Rect((i-1)*24, (j-1)*24, 24, 24)
+                Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
     cursor = pygame.Rect(x, y, 12, 12)
