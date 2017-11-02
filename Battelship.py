@@ -28,28 +28,24 @@ Board = [[0 for x in range(w)] for y in range(h)]
 
 for i in range(w):
     for j in range(h):
-        Board[i][j] = 'white'
+        Board[i][j] = 'blue'
 
-Board[0][0] = 'A'
-Board[3][5] = 'red'
-Board[4][6] = 'A'
-Board[5][7] = 'yellow'
 
 def draw_board(board):
     clock.tick(13)
     screen.fill((255,255,255))
     for i in range(w):
         for j in range(h):
-            if board[i][j] == 'white':
+            if board[i][j] == 'blue':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
-                pygame.draw.rect(screen, (255,255,255), Rect)
+                pygame.draw.rect(screen, (0,0,255), Rect)
             if board[i][j] == 'red':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (255,0,0), Rect)
             if board[i][j] == 'yellow':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (249,237,2), Rect)
-            if board[i][j] == 'A':
+            if board[i][j] == 'grey':
                 Rect = pygame.Rect((i)*24, (j)*24, 24, 24)
                 pygame.draw.rect(screen, (122,111,111), Rect)
 
@@ -76,7 +72,7 @@ def key_press(key):
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
         print (x/24+1, y/24+1)
-        if Board[x/24][y/24] == 'A':
+        if Board[x/24][y/24] == 'grey':
             Board[x/24][y/24]  = 'red'
         elif Board[x/24][y/24]  == 'red':
             print 'invalid'
@@ -89,7 +85,7 @@ def ship_location(key):
     print 'get ship location'
     print x/24, y/24
     if key[pygame.K_p]:
-        Board[x/24][y/24] = 'A'
+        Board[x/24][y/24] = 'grey'
         return 1
     if key[pygame.K_RIGHT]:
         if x < 24*(size-1): x+=24
@@ -100,28 +96,29 @@ def ship_location(key):
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
 
-def ship_direction(key):
+def ship_direction(key, ship):
     print 'get ship direction'
+    global map
     if key[pygame.K_RIGHT] and (x/24+4) < 10:
-        for i in range(1, 5):
-            Board[x/24 + i][y/24] = 'A'
-            print 'r'
-            return 1
+        for i in range(1, map[ship]):
+            Board[x/24 + i][y/24] = 'grey'
+        print 'r'
+        return 1
     if key[pygame.K_LEFT] and (x/24-4) > 0:
-        for i in range(1, 5):
-            Board[x/24 - i][y/24] = 'A'
-            print 'l'
-            return 1
+        for i in range(1, map[ship]):
+            Board[x/24 - i][y/24] = 'grey'
+        print 'l'
+        return 1
     if key[pygame.K_UP] and (y/24+4) < 10:
-        for i in range(1, 5):
-            Board[x/24][y/24 + i] = 'A'
-            print 'u'
-            return 1
+        for i in range(1, map[ship]):
+            Board[x/24][y/24 - i] = 'grey'
+        print 'u'
+        return 1
     if key[pygame.K_DOWN] and (y/24-4) > 0:
-        for i in range(1, 5):
-            Board[x/24][y/24 - i] = 'A'
-            print 'd'
-            return 1
+        for i in range(1, map[ship]):
+            Board[x/24][y/24 + i] = 'grey'
+        print 'd'
+        return 1
     else:
         return 0
 
@@ -131,22 +128,23 @@ def place_ship():
     global Board
 
     print "place ship"
-
-    while 1:
-        clock.tick(13)
-        draw_board(Board)
-        key = pygame.key.get_pressed()
-        if ship_location(key) == 1:
-            break
-        pygame.event.pump()
-
-    while 1:
-        clock.tick(13)
-        key = pygame.key.get_pressed()
-        if ship_direction(key) == 1:
+    for ship in ships:
+        while 1:
+            clock.tick(13)
             draw_board(Board)
-            break
-        pygame.event.pump()
+            key = pygame.key.get_pressed()
+            if ship_location(key) == 1:
+                break
+            pygame.event.pump()
+
+        while 1:
+            clock.tick(13)
+            draw_board(Board)
+            key = pygame.key.get_pressed()
+            if ship_direction(key, ship) == 1:
+                draw_board(Board)
+                break
+            pygame.event.pump()
 
 draw_board(Board)
 place_ship()
