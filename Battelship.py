@@ -31,10 +31,14 @@ y1 = 0
 #create matrix that will hold information of the board game
 w, h = 10,10
 Board = [[0 for x in range(w)] for y in range(h)]
+opponent_board = [[0 for x in range(w)] for y in range(h)]
+play_board = [[0 for x in range(w)] for y in range(h)]
 
 for i in range(w):
     for j in range(h):
         Board[i][j] = 'blue'
+        opponent_board[i][j] = 'blue'
+        play_board[i][j] = 'blue'
 
 def main():
     client_server_select = raw_input('Type client or server: ')
@@ -50,6 +54,7 @@ def server():
     #socket setup
     global serverSocket
     global Board
+    global opponent_board
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('',serverPort))
@@ -65,13 +70,13 @@ def server():
     #sends file to opponent
     #also checks for quit
     print 'sending'
-    board = simplejson.dumps(Board)
-    connectionSocket.sendall(board)
+    connectionSocket.sendall(simplejson.dumps(Board))
 
     print 'waiting'
-    opponent_board = connectionSocket.recv(1024)
+    temp = connectionSocket.recv(1024)
+    opponent_board = simplejson.loads(temp)
     print 'board recieved'
-
+    print opponent_board
     play()
 
     #closes socket after quit
@@ -80,6 +85,7 @@ def server():
 
 def client():
     global Board
+    global opponent_board
     #input server IP
     serverName = raw_input('Enter server IP: ')
 
@@ -94,8 +100,9 @@ def client():
     temp = clientSocket.recv(1024)
     opponent_board = simplejson.loads(temp)
     print 'recieved'
+    print opponent_board
     print 'sending'
-    clientSocket.sendall(simplejson(Board))
+    clientSocket.sendall(simplejson.dumps(Board))
     print 'sent'
     play()
 
@@ -244,7 +251,7 @@ if __name__ == '__main__':
         print 'Closing.'
         serverSocket.shutdown(SHUT_RDWR)
         serverSocket.close()
-        
+
 # def print_board(s,board):
 
 # 	# WARNING: This function was crafted with a lot of attention. Please be aware that any
