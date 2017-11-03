@@ -3,6 +3,12 @@
 import copy, random, math
 import pygame, sys
 from pygame.locals import *
+from socket import *
+import os.path
+import simplejson
+
+serverPort = 12000
+serverSocket = 0
 
 pygame.init()
 
@@ -30,6 +36,72 @@ for i in range(w):
     for j in range(h):
         Board[i][j] = 'blue'
 
+def main():
+    client_server_select = raw_input('Type client or server: ')
+
+    if client_server_select == 'client':
+        client()
+    elif client_server_select == 'server':
+        server()
+    else:
+        print 'Invalid option. Closing.'
+
+def server():
+    #socket setup
+    global serverSocket
+    global Board
+
+    serverSocket = socket(AF_INET, SOCK_STREAM)
+    serverSocket.bind(('',serverPort))
+    serverSocket.listen(1)
+
+    print "The server has started.\nUse ctrl-c to quit."
+    #waiting for connection
+    connectionSocket, addr = serverSocket.accept()
+
+    draw_board(Board)
+    place_ship()
+
+    #sends file to opponent
+    #also checks for quit
+    print 'sending'
+    board = simplejson.dumps(Board)
+    connectionSocket.sendall(board)
+
+    print 'waiting'
+    opponent_board = connectionSocket.recv(1024)
+    print 'board recieved'
+
+    play()
+
+    #closes socket after quit
+    connectionSocket.shutdown(SHUT_RDWR)
+    connectionSocket.close()
+
+def client():
+    global Board
+    #input server IP
+    serverName = raw_input('Enter server IP: ')
+
+    #socket setup
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect((serverName,serverPort))
+    print 'Client started.\nValid command is send\nEnter \'q\' to quit.'
+
+    draw_board(Board)
+    place_ship()
+    print 'waiting'
+    temp = clientSocket.recv(1024)
+    opponent_board = simplejson.loads(temp)
+    print 'recieved'
+    print 'sending'
+    clientSocket.sendall(simplejson(Board))
+    print 'sent'
+    play()
+
+    #closes socket after quit
+    clientSocket.shutdown(SHUT_RDWR)
+    clientSocket.close()
 
 def draw_board(board):
     clock.tick(13)
@@ -146,26 +218,33 @@ def place_ship():
                 break
             pygame.event.pump()
 
-draw_board(Board)
-place_ship()
 
-while 1:
-    #set the frequency on how often to check for user input
-    draw_board(Board)
+def play():
+    global Board
+    while 1:
+        #set the frequency on how often to check for user input
+        draw_board(Board)
 
-    #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
-    #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
-    key = pygame.key.get_pressed()
-    key_press(key)
+        #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
+        #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
+        key = pygame.key.get_pressed()
+        key_press(key)
 
-    #event handlers to eithe quit the program or whipe the board back to  a blank grid
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        elif event.type == KEYDOWN and event.key == K_ESCAPE:
-            sys.exit()
+        #event handlers to eithe quit the program or whipe the board back to  a blank grid
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                sys.exit()
 
-
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print 'Closing.'
+        serverSocket.shutdown(SHUT_RDWR)
+        serverSocket.close()
+        
 # def print_board(s,board):
 
 # 	# WARNING: This function was crafted with a lot of attention. Please be aware that any
