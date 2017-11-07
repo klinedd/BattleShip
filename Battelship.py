@@ -77,7 +77,7 @@ def server():
     opponent_board = simplejson.loads(temp)
     print 'board recieved'
     print opponent_board
-    play()
+    play(connectionSocket, 'Player 1')
 
     #closes socket after quit
     connectionSocket.shutdown(SHUT_RDWR)
@@ -104,7 +104,7 @@ def client():
     print 'sending'
     clientSocket.sendall(simplejson.dumps(Board))
     print 'sent'
-    play()
+    play(clientSocket, 'Player 2')
 
     #closes socket after quit
     clientSocket.shutdown(SHUT_RDWR)
@@ -139,6 +139,8 @@ def draw_board(board):
     pygame.display.update()
 
 def key_press(key):
+    global opponent_board
+    global play_board
     global x
     global y
     if key[pygame.K_RIGHT]:
@@ -150,18 +152,21 @@ def key_press(key):
     if key[pygame.K_DOWN]:
         if y < 24*(size-1): y+=24
     if key[pygame.K_s]:
-        print (x/24+1, y/24+1)
-        if Board[x/24][y/24] == 'grey':
-            Board[x/24][y/24]  = 'red'
-        elif Board[x/24][y/24]  == 'red':
-            print 'invalid'
+        # print (x/24+1, y/24+1)
+        if opponent_board[x/24][y/24] == 'grey':
+            play_board[x/24][y/24]  = 'red'
+            opponent_board[x/24][y/24]  = 'red'
+        elif play_board[x/24][y/24]  == 'red':
+            # print 'invalid'
+            pass
         else:
-            Board[x/24][y/24] = 'yellow'
+            play_board[x/24][y/24] = 'yellow'
+            opponent_board[x/24][y/24] = 'yellow'
 
 def ship_location(key):
     global x
     global y
-    print 'get ship location'
+    # print 'get ship location'
     print x/24, y/24
     if key[pygame.K_p]:
         Board[x/24][y/24] = 'grey'
@@ -176,27 +181,27 @@ def ship_location(key):
         if y < 24*(size-1): y+=24
 
 def ship_direction(key, ship):
-    print 'get ship direction'
+    # print 'get ship direction'
     global map
-    if key[pygame.K_RIGHT] and (x/24+4) < 10:
+    if key[pygame.K_RIGHT] and (x/24+(map[ship]-1)) < 10:
         for i in range(1, map[ship]):
             Board[x/24 + i][y/24] = 'grey'
-        print 'r'
+        # print 'r'
         return 1
-    if key[pygame.K_LEFT] and (x/24-4) > 0:
+    if key[pygame.K_LEFT] and (x/24-(map[ship]-1)) > 0:
         for i in range(1, map[ship]):
             Board[x/24 - i][y/24] = 'grey'
-        print 'l'
+        # print 'l'
         return 1
-    if key[pygame.K_UP] and (y/24+4) < 10:
+    if key[pygame.K_UP] and (y/24-(map[ship]-1)) > 0:
         for i in range(1, map[ship]):
             Board[x/24][y/24 - i] = 'grey'
-        print 'u'
+        # print 'u'
         return 1
-    if key[pygame.K_DOWN] and (y/24-4) > 0:
+    if key[pygame.K_DOWN] and (y/24+(map[ship]-1)) < 10:
         for i in range(1, map[ship]):
             Board[x/24][y/24 + i] = 'grey'
-        print 'd'
+        # print 'd'
         return 1
     else:
         return 0
@@ -226,16 +231,62 @@ def place_ship():
             pygame.event.pump()
 
 
-def play():
+
+def play(socket, player):
     global Board
+    global play_board
+    global opponent_board
+
     while 1:
         #set the frequency on how often to check for user input
-        draw_board(Board)
+        draw_board(play_board)
+        if player == 'Player 1':
+            print 'play'
+            while 1:
+                draw_board(play_board)
+                clock.tick(13)
+                key = pygame.key.get_pressed()
+                if key[pygame.K_SPACE]:
+                    break
+                else:
+                    key_press(key)
+                pygame.event.pump()
+            socket.send('sending')
+            if socket.recv(1024) == 'send':
+                socket.sendall(simplejson.dumps(opponent_board))
 
-        #looks for when any of the arrow keys are pressed and sets the x and y variables accordingly
-        #also checks to make sure the "etch-a-sketch" does not go off the edge of the screen
-        key = pygame.key.get_pressed()
-        key_press(key)
+            temp = socket.recv(1024)
+            Board = simplejson.loads(temp)
+
+            draw_board(Board)
+            raw_input('Continue')
+
+        if player == 'Player 2':
+            while 1:
+                temp = socket.recv(1024)
+                if temp == 'sending':
+                    socket.send('send')
+                    temp = socket.recv(1024)
+                    break
+
+            Board = simplejson.loads(temp)
+            draw_board(Board)
+            raw_input('Continue')
+            print 'play'
+            while 1:
+                draw_board(play_board)
+                clock.tick(13)
+                key = pygame.key.get_pressed()
+                if key[pygame.K_SPACE]:
+                    break
+                else:
+                    key_press(key)
+                pygame.event.pump()
+            socket.sendall(simplejson.dumps(opponent_board))
+
+
+
+
 
         #event handlers to eithe quit the program or whipe the board back to  a blank grid
         for event in pygame.event.get():
