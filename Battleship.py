@@ -88,7 +88,7 @@ def server():
         response = raw_input('Continue? ')
         if response == 'no':
             break
-        if resoponse == 'yes':
+        if response == 'yes':
             for i in range(w):
                 for j in range(h):
                     Board[i][j] = 'blue'
@@ -120,8 +120,15 @@ def client():
         clientSocket.sendall(simplejson.dumps(Board))
         print 'sent'
         play(clientSocket, 'Player 2')
-        if raw_input('Continue? ') == 'no':
+        response = raw_input('Continue? ')
+        if response == 'no':
             break
+        if response == 'yes':
+            for i in range(w):
+                for j in range(h):
+                    Board[i][j] = 'blue'
+                    opponent_board[i][j] = 'blue'
+                    play_board[i][j] = 'blue'
     #closes socket after quit
     clientSocket.shutdown(SHUT_RDWR)
     clientSocket.close()
