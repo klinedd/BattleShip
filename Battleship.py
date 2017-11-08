@@ -85,8 +85,15 @@ def server():
         opponent_board = simplejson.loads(temp)
         print 'board recieved'
         play(connectionSocket, 'Player 1')
-        if raw_input('Continue? ') == 'no':
+        response = raw_input('Continue? ')
+        if response == 'no':
             break
+        if resoponse == 'yes':
+            for i in range(w):
+                for j in range(h):
+                    Board[i][j] = 'blue'
+                    opponent_board[i][j] = 'blue'
+                    play_board[i][j] = 'blue'
 
     #closes socket after quit
     connectionSocket.shutdown(SHUT_RDWR)
@@ -298,12 +305,13 @@ def play(socket, player):
         if player == 'Player 1':
 
             shoot()
-            if check_win():
-                break
 
             socket.send('sending')
             if socket.recv(1024) == 'send':
                 socket.sendall(simplejson.dumps(opponent_board))
+
+            if check_win():
+                break
 
             temp = socket.recv(1024)
             Board = simplejson.loads(temp)
@@ -329,10 +337,10 @@ def play(socket, player):
             resume()
 
             shoot()
-            if check_win():
-                break
 
             socket.sendall(simplejson.dumps(opponent_board))
+            if check_win():
+                break
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
