@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import copy, random, math
+import copy, random, math, time
 import pygame, sys
 from pygame.locals import *
 from socket import *
@@ -172,13 +172,30 @@ def shoot():
                         draw_board(play_board)
                         hitCount += 1
                         if hitCount == 1:
-                            pygame.display.set_caption('YOU WIN')
+                            message_display('YOU WIN')
                         return
                     if opponent_board[x/24][y/24] == 'blue':
                         play_board[x/24][y/24] = 'yellow'
                         opponent_board[x/24][y/24] = 'yellow'
                         draw_board(play_board)
                         return
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, (0,0,0))
+    return textSurface, textSurface.get_rect()
+
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf',15)
+    TextSurf, TextRect = text_objects(text,largeText)
+    TextRect.center = ((240/2),(240/2))
+    screen.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+    return
+
 
 def ship_location():
     global x
