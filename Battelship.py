@@ -136,69 +136,91 @@ def draw_board(board):
         pygame.draw.line(screen, (0,0,0), (x1+24+(i*24), y1), (x1+24+(i*24), y1+24*size))
     pygame.display.update()
 
-def key_press(key):
+def shoot():
     global opponent_board
     global play_board
     global x
     global y
-    if key[pygame.K_RIGHT]:
-        if x < 24*(size-1): x+=24
-    if key[pygame.K_LEFT]:
-        if x > 24: x-=24
-    if key[pygame.K_UP]:
-        if y > 24: y-=24
-    if key[pygame.K_DOWN]:
-        if y < 24*(size-1): y+=24
-    if key[pygame.K_RETURN]:
-        if opponent_board[x/24][y/24] == 'grey':
-            play_board[x/24][y/24]  = 'red'
-            opponent_board[x/24][y/24]  = 'red'
-            return 1
-        elif play_board[x/24][y/24]  == 'red':
-            pass
-        elif play_board[x/24][y/24]  == 'yellow':
-            pass
-        else:
-            play_board[x/24][y/24] = 'yellow'
-            opponent_board[x/24][y/24] = 'yellow'
-            return 1
 
+    while 1:
+        draw_board(play_board)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    if x < 24*(size-1): x+=24
+                if event.key == pygame.K_LEFT:
+                    if x > 24: x-=24
+                if event.key == pygame.K_UP:
+                    if y > 24: y-=24
+                if event.key == pygame.K_DOWN:
+                    if y < 24*(size-1): y+=24
+                if event.key == pygame.K_RETURN:
+                    if opponent_board[x/24][y/24] == 'grey':
+                        play_board[x/24][y/24]  = 'red'
+                        opponent_board[x/24][y/24]  = 'red'
+                        draw_board(play_board)
+                        return
+                    if opponent_board[x/24][y/24] == 'blue':
+                        play_board[x/24][y/24] = 'yellow'
+                        opponent_board[x/24][y/24] = 'yellow'
+                        draw_board(play_board)
+                        return
 
-def ship_location(key):
+def ship_location():
     global x
     global y
-    if key[pygame.K_RETURN]:
-        Board[x/24][y/24] = 'grey'
-        return 1
-    if key[pygame.K_RIGHT]:
-        if x < 24*(size-1): x+=24
-    if key[pygame.K_LEFT]:
-        if x > 24: x-=24
-    if key[pygame.K_UP]:
-        if y > 24: y-=24
-    if key[pygame.K_DOWN]:
-        if y < 24*(size-1): y+=24
+    global Board
+    while 1:
+        draw_board(Board)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    if x < 24*(size-1): x+=24
+                if event.key == pygame.K_LEFT:
+                    if x > 24: x-=24
+                if event.key == pygame.K_UP:
+                    if y > 24: y-=24
+                if event.key == pygame.K_DOWN:
+                    if y < 24*(size-1): y+=24
+                if event.key == pygame.K_RETURN:
+                    Board[x/24][y/24] = 'grey'
+                    draw_board(Board)
+                    return
 
-def ship_direction(key, ship):
+def ship_direction(ship):
     global map
-    if key[pygame.K_RIGHT] and (x/24+(map[ship]-1)) < 10:
-        for i in range(1, map[ship]):
-            Board[x/24 + i][y/24] = 'grey'
-        return 1
-    if key[pygame.K_LEFT] and (x/24-(map[ship]-1)) > -1:
-        for i in range(1, map[ship]):
-            Board[x/24 - i][y/24] = 'grey'
-        return 1
-    if key[pygame.K_UP] and (y/24-(map[ship]-1)) > -1:
-        for i in range(1, map[ship]):
-            Board[x/24][y/24 - i] = 'grey'
-        return 1
-    if key[pygame.K_DOWN] and (y/24+(map[ship]-1)) < 10:
-        for i in range(1, map[ship]):
-            Board[x/24][y/24 + i] = 'grey'
-        return 1
-    else:
-        return 0
+    global Board
+    while 1:
+        draw_board(Board)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT and (x/24+(map[ship]-1)) < 10:
+                    for i in range(1, map[ship]):
+                        Board[x/24 + i][y/24] = 'grey'
+                    draw_board(Board)
+                    return
+                if event.key == pygame.K_LEFT and (x/24-(map[ship]-1)) > -1:
+                    for i in range(1, map[ship]):
+                        Board[x/24 - i][y/24] = 'grey'
+                    draw_board(Board)
+                    return
+                if event.key == pygame.K_UP and (y/24-(map[ship]-1)) > -1:
+                    for i in range(1, map[ship]):
+                        Board[x/24][y/24 - i] = 'grey'
+                    draw_board(Board)
+                    return
+                if event.key == pygame.K_DOWN and (y/24+(map[ship]-1)) < 10:
+                    for i in range(1, map[ship]):
+                        Board[x/24][y/24 + i] = 'grey'
+                    draw_board(Board)
+                    return
+
 
 def place_ship():
     global x
@@ -207,46 +229,17 @@ def place_ship():
 
     print "place ship"
     for ship in ships:
-        while 1:
-            clock.tick(13)
-            draw_board(Board)
-            key = pygame.key.get_pressed()
-            if ship_location(key) == 1:
-                break
-            pygame.event.pump()
-
-        while 1:
-            clock.tick(13)
-            draw_board(Board)
-            key = pygame.key.get_pressed()
-            if ship_direction(key, ship) == 1:
-                draw_board(Board)
-                break
-            pygame.event.pump()
-
-def shoot():
-    global play_board
-    print pygame.event.peek()
-    pygame.event.clear()
-    print pygame.event.peek()
-    while 1:
-        draw_board(play_board)
-        clock.tick(13)
-        key = pygame.key.get_pressed()
-        if key_press(key) == 1:
-            draw_board(play_board)
-            break
-        pygame.event.pump()
+        ship_location()
+        ship_direction(ship)
 
 def resume():
-    print pygame.event.peek()
-    pygame.event.clear()
-    print pygame.event.peek()
     while 1:
-        key = pygame.key.get_pressed()
-        if key[pygame.K_RETURN]:
-            break
-        pygame.event.pump()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return
 
 def play(socket, player):
     global Board
@@ -269,7 +262,7 @@ def play(socket, player):
             draw_board(Board)
 
             resume()
-            clock.tick(100)
+
 
         if player == 'Player 2':
 
@@ -281,7 +274,7 @@ def play(socket, player):
             draw_board(Board)
 
             resume()
-            clock.tick(100)
+
             shoot()
 
             socket.sendall(simplejson.dumps(opponent_board))
