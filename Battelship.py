@@ -12,6 +12,8 @@ serverSocket = 0
 
 pygame.init()
 
+pygame.mouse.set_visible(False)
+
 screen = pygame.display.set_mode((320,240))
 clock = pygame.time.Clock()
 screen.fill((255,255,255))
@@ -27,6 +29,10 @@ y = 0
 #used to draw the grid lines
 x1 = 0
 y1 = 0
+
+
+#win status counter
+hitCount = 1
 
 #create matrix that will hold information of the board game
 w, h = 10,10
@@ -141,6 +147,7 @@ def shoot():
     global play_board
     global x
     global y
+    global hitCount
 
     while 1:
         draw_board(play_board)
@@ -161,6 +168,9 @@ def shoot():
                         play_board[x/24][y/24]  = 'red'
                         opponent_board[x/24][y/24]  = 'red'
                         draw_board(play_board)
+			hitCount += 1
+                        if hitCount == 1:
+                            message_display('YOU WIN')
                         return
                     if opponent_board[x/24][y/24] == 'blue':
                         play_board[x/24][y/24] = 'yellow'
@@ -240,6 +250,18 @@ def resume():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     return
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf',115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+    return
+
 
 def play(socket, player):
     global Board
