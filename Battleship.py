@@ -34,7 +34,7 @@ y1 = 0
 
 
 #win status counter
-hitCount = 16
+hitCount = 0
 
 #create matrix that will hold information of the board game
 w, h = 10,10
