@@ -34,7 +34,7 @@ y1 = 0
 
 
 #win status counter
-hitCount = 0
+hitCount = 16
 
 #create matrix that will hold information of the board game
 w, h = 10,10
@@ -63,6 +63,7 @@ def server():
     global serverSocket
     global Board
     global opponent_board
+    global play_board
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('',serverPort))
@@ -85,10 +86,11 @@ def server():
         opponent_board = simplejson.loads(temp)
         print 'board recieved'
         play(connectionSocket, 'Player 1')
-        response = raw_input('Continue? ')
+        response = raw_input('Continue? (yes/no): ')
         if response == 'no':
             break
         if response == 'yes':
+            hitCount = 0
             for i in range(w):
                 for j in range(h):
                     Board[i][j] = 'blue'
@@ -102,6 +104,7 @@ def server():
 def client():
     global Board
     global opponent_board
+    global play_board
     #input server IP
     serverName = raw_input('Enter server IP: ')
 
@@ -120,15 +123,17 @@ def client():
         clientSocket.sendall(simplejson.dumps(Board))
         print 'sent'
         play(clientSocket, 'Player 2')
-        response = raw_input('Continue? ')
+        response = raw_input('Continue? (yes/no): ')
         if response == 'no':
             break
         if response == 'yes':
+            hitCount = 0
             for i in range(w):
                 for j in range(h):
                     Board[i][j] = 'blue'
                     opponent_board[i][j] = 'blue'
                     play_board[i][j] = 'blue'
+
     #closes socket after quit
     clientSocket.shutdown(SHUT_RDWR)
     clientSocket.close()
