@@ -251,9 +251,12 @@ def ship_location():
                 if event.key == pygame.K_DOWN:
                     if y < 24*(size-1): y+=24
                 if event.key == pygame.K_RETURN:
-                    Board[x/24][y/24] = 'grey'
-                    draw_board(Board)
-                    return
+                   if ( Board[x/24][y/24] != 'grey'):
+			Board[x/24][y/24] = 'grey'
+                    	draw_board(Board)
+                    	return
+		   else:
+			print "Pick valid ship placement"
 
 def ship_direction(ship):
     global map
@@ -265,27 +268,55 @@ def ship_direction(ship):
                     sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT and (x/24+(map[ship]-1)) < 10:
-                    for i in range(1, map[ship]):
-                        Board[x/24 + i][y/24] = 'grey'
-                    draw_board(Board)
-                    return
+                    if (check_direction(ship, "right")):
+                        for i in range(1, map[ship]):
+                            Board[x/24 + i][y/24] = 'grey'
+                        draw_board(Board)
+                        return
                 if event.key == pygame.K_LEFT and (x/24-(map[ship]-1)) > -1:
-                    for i in range(1, map[ship]):
-                        Board[x/24 - i][y/24] = 'grey'
-                    draw_board(Board)
-                    return
+                    if (check_direction(ship, "left")):
+                        for i in range(1, map[ship]):
+                            Board[x/24 - i][y/24] = 'grey'
+                        draw_board(Board)
+                        return
                 if event.key == pygame.K_UP and (y/24-(map[ship]-1)) > -1:
-                    for i in range(1, map[ship]):
-                        Board[x/24][y/24 - i] = 'grey'
-                    draw_board(Board)
-                    return
+                    if (check_direction(ship, "up")):
+                        for i in range(1, map[ship]):
+                            Board[x/24][y/24 - i] = 'grey'
+                        draw_board(Board)
+                        return
                 if event.key == pygame.K_DOWN and (y/24+(map[ship]-1)) < 10:
-                    for i in range(1, map[ship]):
-                        Board[x/24][y/24 + i] = 'grey'
-                    draw_board(Board)
-                    return
+                    if (check_direction(ship, "down")):
+                        for i in range(1, map[ship]):
+                            Board[x/24][y/24 + i] = 'grey'
+                        draw_board(Board)
+                        return
 
 
+def check_direction(ship, direction):
+    check = True
+    if (direction == "right"):
+        for i in range(1, map[ship]):
+            if (Board[x/24 + i][y/24] == 'grey'):
+                check = False
+    if (direction == "left"):
+        for i in range(1, map[ship]):
+            if (Board[x/24 - i][y/24] == 'grey'):
+                check = False
+    if (direction == "up"):
+        for i in range(1, map[ship]):
+            if (Board[x/24][y/24 - i] == 'grey'):
+                check = False
+    if (direction == "down"):
+        for i in range(1, map[ship]):
+            if (Board[x/24][y/24 + i] == 'grey'):
+                check = False
+    if (check == False):
+        print "Pick valid direction!"
+    return check 
+        
+    
+    
 def place_ship():
     global x
     global y
