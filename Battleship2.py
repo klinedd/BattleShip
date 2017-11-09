@@ -290,7 +290,7 @@ def ship_direction(ship):
                         return
 
 
-def check_direction(ship, driection):
+def check_direction(ship, direction):
     check = True
     if (direction == "right"):
         for i in range(1, map[ship]):
