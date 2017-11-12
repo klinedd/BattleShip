@@ -6,13 +6,19 @@ from pygame.locals import *
 from socket import *
 import os.path
 import simplejson
-import Adafruit_BBIO as GPIO
+import Adafruit_BBIO.GPIO as GPIO
 
 miscBtn = "PAUSE"
-upBtn = "GP1_6"
-downBtn = "GP1_5"
+upBtn = "GREEN"
+downBtn = "RED"
 leftBtn = "GP1_4"
 rightBtn = "GP1_3"
+
+GPIO.setup(miscBtn, GPIO.IN)
+GPIO.setup(upBtn, GPIO.IN)
+GPIO.setup(downBtn, GPIO.IN)
+GPIO.setup(leftBtn, GPIO.IN)
+GPIO.setup(rightBtn, GPIO.IN)
 
 
 serverPort = 12000
@@ -51,11 +57,26 @@ opponent_board = [[0 for x in range(w)] for y in range(h)]
 play_board = [[0 for x in range(w)] for y in range(h)]
 
 
+def btnUpdate(channel):
+    if channel == upBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_UP))
+    elif channel == downBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_DOWN))
+    elif channel == leftBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_LEFT))
+    elif channel == rightBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RIGHT))
+    elif channel == miscBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
+        
+
 GPIO.add_event_detect(miscBtn, GPIO.BOTH, callback = btnUpdate)
 GPIO.add_event_detect(upBtn, GPIO.BOTH, callback = btnUpdate)
 GPIO.add_event_detect(downBtn, GPIO.BOTH, callback = btnUpdate)
 GPIO.add_event_detect(leftBtn, GPIO.BOTH, callback = btnUpdate)
 GPIO.add_event_detect(rightBtn, GPIO.BOTH, callback = btnUpdate)
+
+
 
 for i in range(w):
     for j in range(h):
@@ -72,20 +93,19 @@ def main():
         server()
     else:
         print 'Invalid option. Closing.'
+    
+    try:
+        while True:
+            time.sleep(0.25)
+
+    except KeyboardInterrupt:
+        print "Cleaning Up"
+        GPIO.cleanup()
+    GPIO.cleanup()
         
     
 
-def btnUpdate(channel):
-    if channel == upBtn:
-        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_UP))
-    elif channel == downBtn:
-        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_DOWN))
-    elif channel == leftBtn:
-        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_LEFT))
-    elif channel == rightBtn:
-        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RIGHT))
-    elif channel == miscBtn:
-        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
+
         
     
 
@@ -431,3 +451,4 @@ if __name__ == '__main__':
         print 'Closing.'
         serverSocket.shutdown(SHUT_RDWR)
         serverSocket.close()
+    
