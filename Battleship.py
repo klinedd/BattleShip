@@ -70,11 +70,11 @@ def btnUpdate(channel):
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
         
 
-GPIO.add_event_detect(miscBtn, GPIO.BOTH, callback = btnUpdate)
-GPIO.add_event_detect(upBtn, GPIO.BOTH, callback = btnUpdate)
-GPIO.add_event_detect(downBtn, GPIO.BOTH, callback = btnUpdate)
-GPIO.add_event_detect(leftBtn, GPIO.BOTH, callback = btnUpdate)
-GPIO.add_event_detect(rightBtn, GPIO.BOTH, callback = btnUpdate)
+GPIO.add_event_detect(miscBtn, GPIO.HIGH, callback = btnUpdate)
+GPIO.add_event_detect(upBtn, GPIO.HIGH, callback = btnUpdate)
+GPIO.add_event_detect(downBtn, GPIO.HIGH, callback = btnUpdate)
+GPIO.add_event_detect(leftBtn, GPIO.HIGH, callback = btnUpdate)
+GPIO.add_event_detect(rightBtn, GPIO.HIGH, callback = btnUpdate)
 
 
 
