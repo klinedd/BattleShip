@@ -9,8 +9,8 @@ import simplejson
 import Adafruit_BBIO.GPIO as GPIO
 
 miscBtn = "PAUSE"
-upBtn = "GREEN"
-downBtn = "RED"
+upBtn = "RESET"
+downBtn = "MODE"
 leftBtn = "GP1_4"
 rightBtn = "GP1_3"
 
