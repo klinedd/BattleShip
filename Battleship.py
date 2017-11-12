@@ -6,6 +6,14 @@ from pygame.locals import *
 from socket import *
 import os.path
 import simplejson
+import Adafruit_BBIO as GPIO
+
+miscBtn = "PAUSE"
+upBtn = "GP1_6"
+downBtn = "GP1_5"
+leftBtn = "GP1_4"
+rightBtn = "GP1_3"
+
 
 serverPort = 12000
 serverSocket = 0
@@ -42,6 +50,13 @@ Board = [[0 for x in range(w)] for y in range(h)]
 opponent_board = [[0 for x in range(w)] for y in range(h)]
 play_board = [[0 for x in range(w)] for y in range(h)]
 
+
+GPIO.add_event_detect(miscBtn, GPIO.BOTH, callback = btnUpdate)
+GPIO.add_event_detect(upBtn, GPIO.BOTH, callback = btnUpdate)
+GPIO.add_event_detect(downBtn, GPIO.BOTH, callback = btnUpdate)
+GPIO.add_event_detect(leftBtn, GPIO.BOTH, callback = btnUpdate)
+GPIO.add_event_detect(rightBtn, GPIO.BOTH, callback = btnUpdate)
+
 for i in range(w):
     for j in range(h):
         Board[i][j] = 'blue'
@@ -57,6 +72,22 @@ def main():
         server()
     else:
         print 'Invalid option. Closing.'
+        
+    
+
+def btnUpdate(channel):
+    if channel == upBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_UP))
+    elif channel == downBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_DOWN))
+    elif channel == leftBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_LEFT))
+    elif channel == rightBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RIGHT))
+    elif channel == miscBtn:
+        pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
+        
+    
 
 def server():
     #socket setup
@@ -321,7 +352,8 @@ def place_ship():
     global x
     global y
     global Board
-
+    
+    
     print "place ship"
     for ship in ships:
         ship_location()
