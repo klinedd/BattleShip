@@ -62,16 +62,16 @@ def btnUpdate(channel):
     if channel == upBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_UP))
         print ("up posted")
-    elif channel == downBtn:
+    if channel == downBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_DOWN))
         print ("down posted")
-    elif channel == leftBtn:
+    if channel == leftBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_LEFT))
         print "left posted"
-    elif channel == rightBtn:
+    if channel == rightBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RIGHT))
         print "right posted"
-    elif channel == miscBtn:
+    if channel == miscBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
         print "misc posted"
         
