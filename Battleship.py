@@ -58,16 +58,22 @@ play_board = [[0 for x in range(w)] for y in range(h)]
 
 
 def btnUpdate(channel):
+    print "button pressed"
     if channel == upBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_UP))
+        print ("up posted")
     elif channel == downBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_DOWN))
+        print ("down posted")
     elif channel == leftBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_LEFT))
+        print "left posted"
     elif channel == rightBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RIGHT))
+        print "right posted"
     elif channel == miscBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
+        print "misc posted"
         
 
 GPIO.add_event_detect(miscBtn, GPIO.HIGH, callback = btnUpdate)
