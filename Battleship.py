@@ -74,7 +74,7 @@ def btnUpdate(channel):
     if channel == miscBtn:
         pygame.event.post(pygame.event.Event(KEYDOWN, key = K_RETURN))
         print "misc posted"
-        
+
 
 GPIO.add_event_detect(miscBtn, GPIO.HIGH, callback = btnUpdate)
 GPIO.add_event_detect(upBtn, GPIO.HIGH, callback = btnUpdate)
@@ -99,7 +99,7 @@ def main():
         server()
     else:
         print 'Invalid option. Closing.'
-    
+
     try:
         while True:
             time.sleep(0.25)
@@ -108,12 +108,12 @@ def main():
         print "Cleaning Up"
         GPIO.cleanup()
     GPIO.cleanup()
-        
-    
 
 
-        
-    
+
+
+
+
 
 def server():
     #socket setup
@@ -121,6 +121,7 @@ def server():
     global Board
     global opponent_board
     global play_board
+    global hitCount
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('',serverPort))
@@ -162,6 +163,7 @@ def client():
     global Board
     global opponent_board
     global play_board
+    global hitCount
     #input server IP
     serverName = raw_input('Enter server IP: ')
 
@@ -370,16 +372,16 @@ def check_direction(ship, direction):
                 check = False
     if (check == False):
         print "Pick valid direction!"
-    return check 
-        
-    
-    
+    return check
+
+
+
 def place_ship():
     global x
     global y
     global Board
-    
-    
+
+
     print "place ship"
     for ship in ships:
         ship_location()
@@ -457,4 +459,3 @@ if __name__ == '__main__':
         print 'Closing.'
         serverSocket.shutdown(SHUT_RDWR)
         serverSocket.close()
-    
