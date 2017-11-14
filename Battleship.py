@@ -9,8 +9,10 @@ import simplejson
 import Adafruit_BBIO.GPIO as GPIO
 
 miscBtn = "PAUSE"
-upBtn = "GREEN"
-downBtn = "RED"
+# upBtn = "GREEN"
+# downBtn = "RED"
+upBtn = "UART1_TXD"
+downBtn = "UART1_RXD"
 leftBtn = "GP1_4"
 rightBtn = "GP1_3"
 
@@ -108,9 +110,6 @@ def main():
         print "Cleaning Up"
         GPIO.cleanup()
     GPIO.cleanup()
-
-
-
 
 
 
